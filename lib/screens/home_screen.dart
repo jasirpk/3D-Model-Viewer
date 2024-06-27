@@ -14,25 +14,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    controller = Flutter3DController();
-    controller.playAnimation(animationName: animationName);
     super.initState();
+    controller = Flutter3DController();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.brown[200],
-        body: SafeArea(
-          child: Center(
-            child: Flutter3DViewer(
-              controller: controller,
-              src: 'assets/models/fox.glb',
-            ),
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
             if (animationName == 'Survey') {
               animationName = 'Walk';
             } else if (animationName == 'Walk') {
@@ -41,9 +32,55 @@ class _HomeScreenState extends State<HomeScreen> {
               animationName = 'Survey';
             }
             controller.playAnimation(animationName: animationName);
-          },
-          backgroundColor: Colors.brown,
-          child: const Icon(Icons.animation),
-        ));
+          });
+        },
+        backgroundColor: Colors.white,
+        child: Icon(
+          Icons.animation,
+          color: Colors.black,
+        ),
+      ),
+      backgroundColor: Colors.black,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            '3D Model Viewer',
+            style: TextStyle(
+              fontSize: 24.0,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Stack(
+            children: [
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.4,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  image: DecorationImage(
+                    image: AssetImage('assets/images/cover_img.jpg'),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                child: Container(
+                  color: Colors.black.withOpacity(0.4),
+                ),
+              ),
+              Positioned.fill(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Flutter3DViewer(
+                    controller: controller,
+                    src: 'assets/models/fox.glb',
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
   }
 }
